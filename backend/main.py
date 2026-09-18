@@ -451,7 +451,10 @@ def update_task(
     task = _get_owned_task(task_id, current_user, db)
 
     if request.title is not None:
-        task.title = request.title.strip()
+        title = request.title.strip()
+        if not title:
+            raise HTTPException(status_code=400, detail="Task title is required")
+        task.title = title
     if request.description is not None:
         task.description = request.description.strip()
     if request.completed is not None:
